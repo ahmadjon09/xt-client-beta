@@ -1,12 +1,54 @@
-import React, { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { data, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import Axios from '../Axios'
 
-export const Profile = ({ user, onClose, onEdit }) => {
+export const Profile = ({ onClose, onEdit }) => {
+  const user = useSelector(state => state.user.data._id)
   const [isEditing, setIsEditing] = useState(false)
-  const [formData, setFormData] = useState({ ...user })
+  const [error, setError] = useState('')
+  const [imagePending, setImagePending] = useState(false)
   const fileInputRef = useRef(null)
+  const dispatch = useDispatch()
+  const [userData, setUserData] = useState({
+    firstName: '',
+    lastName: '',
+    phoneNumber: '',
+    avatar: '',
+    newPassword: ''
+  })
+  const [isLoading, setIsLoading] = useState(false)
+  const [previewAvatar, setPreviewAvatar] = useState('')
 
+  useEffect(() => {
+    if (user && isOpen) {
+      const getUser = async () => {
+        try {
+          setIsLoading(true)
+          setError('')
+          const response = await Axios.get(`client/${user}`)
+          const userData = response.data.data
+
+          setUserData({
+            firstName: userData.firstName || '',
+            lastName: userData.lastName || '',
+            phoneNumber: userData.phoneNumber || '',
+            avatar: userData.avatar || '',
+            newPassword: ''
+          })
+
+          setPreviewAvatar(userData.avatar || '')
+        } catch (error) {
+          setError(error.response?.data?.message || 'Сервер хатоси юз берди.')
+        } finally {
+          setIsLoading(false)
+        }
+      }
+      getUser()
+    }
+  }, [user, isOpen])
+  
   const handleChange = e => {
     const { name, value } = e.target
     setFormData({ ...formData, [name]: value })
@@ -30,20 +72,39 @@ export const Profile = ({ user, onClose, onEdit }) => {
     })
   }
 
-  const handleAddAvatar = e => {
+  const handleAddAvatar = async e => {
     if (!isEditing) return
 
     const files = e.target.files
     if (!files || files.length === 0) return
+    const file = files[0]
+    try {
+      const formData = new FormData()
+      formData.append('image', file)
 
-    // In a real app, you would upload the file to a server
-    // Here we're just creating a local URL for demonstration
-    const newAvatarUrl = URL.createObjectURL(files[0])
+      const res = await fetch(
+        `https://api.imgbb.com/1/upload?key=955f1e37f0aa643262e734c080305b10`,
+        {
+          method: 'POST',
+          body: formData
+        }
+      )
 
-    setFormData({
-      ...formData,
-      avatar: [newAvatarUrl]
-    })
+      const result = await res.json()
+
+      if (result.success) {
+        const uploadedUrl = result.data.url
+
+        setFormData({
+          ...formData,
+          avatar: [uploadedUrl]
+        })
+      } else {
+        throw new Error('Yuklash muvaffaqiyatsiz bo‘ldi')
+      }
+    } catch (err) {
+      console.error(err)
+    }
   }
 
   const triggerFileInput = () => {

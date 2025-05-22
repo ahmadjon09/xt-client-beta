@@ -231,19 +231,19 @@ export default function ProductDetailModal ({
                 </p>
               </div>
               <div className='bg-green-50 px-3 py-1 rounded-full text-green-600 text-sm font-medium'>
-                In Stock: {product.stock.toLocaleString()}
+                Sotuvda mavjud: {product.stock.toLocaleString()}
               </div>
             </div>
 
             <div className='mt-6'>
-              <h2 className='text-lg font-semibold'>Description</h2>
+              <h2 className='text-lg font-semibold'>Tavsif</h2>
               <p className='text-gray-600 mt-2'>{product.description}</p>
             </div>
 
             {/* Color Selection */}
             {product.colors.length > 0 && (
               <div className='mt-6'>
-                <h2 className='text-lg font-semibold'>Colors</h2>
+                <h2 className='text-lg font-semibold'>Ranglar</h2>
                 <div className='flex gap-2 mt-2'>
                   {product.colors.map(color => (
                     <button
@@ -270,7 +270,7 @@ export default function ProductDetailModal ({
             {/* Size */}
             {product.size && (
               <div className='mt-6'>
-                <h2 className='text-lg font-semibold'>Size</h2>
+                <h2 className='text-lg font-semibold'>Hajmi</h2>
                 <div className='mt-2 inline-block bg-gray-100 px-3 py-1 rounded-lg text-gray-700'>
                   {product.size}
                 </div>
@@ -298,7 +298,7 @@ export default function ProductDetailModal ({
 
             {/* Quantity Selector */}
             <div className='mt-6'>
-              <h2 className='text-lg font-semibold'>Quantity</h2>
+              <h2 className='text-lg font-semibold'>Miqdori</h2>
               <div className='flex items-center mt-2'>
                 <button
                   onClick={decreaseQuantity}
@@ -328,7 +328,7 @@ export default function ProductDetailModal ({
                   <Plus className='w-4 h-4' />
                 </button>
                 <div className='ml-4 text-gray-500 text-sm'>
-                  Total:{' '}
+                  Jami:{' '}
                   <span className='font-semibold text-purple-700'>
                     {totalPrice.toLocaleString()} so'm
                   </span>
@@ -362,17 +362,17 @@ export default function ProductDetailModal ({
 
             {/* Additional Info */}
             <div className='mt-8 grid grid-cols-2 gap-4'>
-              <div className='flex items-center gap-2 p-3 rounded-lg bg-gray-50'>
+              <div className='flex items-center gap-2 flex-wrap p-3 rounded-lg bg-gray-50'>
                 <Truck className='w-5 h-5 text-purple-600' />
                 <div>
                   <p className='text-sm font-medium'>Bepul yetkazib berish</p>
-                  <p className='text-xs text-gray-500'>7-14 kun ichida</p>
+                  <p className='text-xs text-gray-500'>7~14 kun ichida</p>
                 </div>
               </div>
-              <div className='flex items-center gap-2 p-3 rounded-lg bg-gray-50'>
+              <div className='flex items-center gap-2 flex-wrap p-3 rounded-lg bg-gray-50'>
                 <Shield className='w-5 h-5 text-purple-600' />
                 <div>
-                  <p className='text-sm font-medium'>12 oylik kafolat</p>
+                  <p className='text-sm font-medium'>3 oylik kafolat</p>
                   <p className='text-xs text-gray-500'>Rasmiy distribyutor</p>
                 </div>
               </div>
