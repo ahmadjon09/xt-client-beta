@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { Loader2, DatabaseBackup } from 'lucide-react'
+=======
+import { Loader2 , DatabaseBackup} from 'lucide-react'
+>>>>>>> b9e74b26410cdca0b4131e71e86da53a568cb418
 import { ProductCard } from '../components/Products'
 
 export const ProductList = ({ products, isLoading }) => {
